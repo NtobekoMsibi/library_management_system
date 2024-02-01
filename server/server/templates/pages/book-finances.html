@@ -1,0 +1,206 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load web_tags %}
+
+{% block content %}
+
+
+    <main>
+        <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+            <div class="w-full mb-1">
+                <div class="mb-4">
+                    <nav class="flex mb-5" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+                            <li class="inline-flex items-center">
+                                <a href="/"
+                                   class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white">
+                                    <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                        </path>
+                                    </svg>
+                                    Home
+                                </a>
+                            </li>
+
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">
+                                        Finances
+                                    </span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <div class="p-4 bg-white border mt-4 border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <!-- Card header -->
+                        <div class="items-center justify-between lg:flex">
+                            <div class="mb-4 lg:mb-0">
+                                <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                                    Library Finances
+                                </h3>
+                                <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+                                    This is a list of receipts received from members with overdue books.
+                                </span>
+                            </div>
+
+                            <div class="mb-4 lg:mb-0 text-right">
+                                <h3 class="mb-2 text-xl font-bold text-green-400 dark:text-green-500">
+                                    {{ total }}
+                                </h3>
+                                <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+                                    Total Received
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <!-- Table -->
+                        <div class="flex flex-col mt-6">
+                            <div class="overflow-x-auto rounded-lg">
+                                <div class="inline-block min-w-full align-middle">
+                                    <div class="overflow-hidden shadow sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                            <tr>
+                                                <th scope="col"
+                                                    class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                    Member
+                                                </th>
+                                                <th scope="col"
+                                                    class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                    Book
+                                                </th>
+                                                <th scope="col"
+                                                    class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                    Paid(E)
+                                                </th>
+                                                <th scope="col"
+                                                    class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                    Date
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="bg-white dark:bg-gray-800">
+
+                                            {% if receipts %}
+
+
+                                                {% for receipt in receipts %}
+
+                                                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                        <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                            <div class="text-base font-semibold text-gray-900 dark:text-white">
+                                                                {{ receipt.issue.member }}
+                                                            </div>
+                                                        </td>
+                                                        <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                                                            {{ receipt.issue.book }}
+                                                        </td>
+                                                        <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                                                            {{ receipt.paid }}
+                                                        </td>
+                                                        <td class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                                                            {{ receipt.date_recorded|date:'Y/m/d' }}
+                                                        </td>
+                                                    </tr>
+
+                                                {% endfor %}
+
+                                            {% else %}
+
+                                                <tr class="text-center text-capitalize">
+                                                    <td colspan="4" class="pt-5 pb-3">
+                                                        NO FINANCIAL DATA.
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="sticky bottom-0 right-0 items-center w-full p-4 bg-white border-t border-gray-200 flex justify-between dark:bg-gray-800 dark:border-gray-700">
+                            <div class="flex items-center mb-4 sm:mb-0">
+                                {% if receipts.has_previous %}
+                                    <a href="?page={{ receipts.previous_page_number }}"
+                                       class="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+
+                                {% if receipts.has_next %}
+                                    <a href="?page={{ receipts.next_page_number }}"
+                                       class="inline-flex justify-center p-1 mr-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span
+                                        class="font-semibold text-gray-900 dark:text-white">{{ receipts.start_index }}-{{ receipts.end_index }}</span>
+                                    of <span
+                                            class="font-semibold text-gray-900 dark:text-white">{{ receipts.paginator.count }}</span></span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                {% if receipts.has_previous %}
+                                    <a href="?page={{ receipts.previous_page_number }}"
+                                       class="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
+                                        <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                        Previous
+                                    </a>
+                                {% endif %}
+                                {% if receipts.has_next %}
+                                    <a href="?page={{ receipts.next_page_number }}"
+                                       class="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
+                                        Next
+                                        <svg class="w-5 h-5 ml-1 -mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </main>
+
+
+{% endblock content %}

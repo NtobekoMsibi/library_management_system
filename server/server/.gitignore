@@ -1,0 +1,16 @@
+*.pyc
+*.DS_Store
+*.egg*
+/dist/
+/.idea
+/docs/_build/
+/node_modules/
+build/
+env
+
+.env
+node_modules
+yarn.lock
+
+tasks_logs/
+media/
